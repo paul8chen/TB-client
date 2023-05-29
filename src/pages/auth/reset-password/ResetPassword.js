@@ -1,17 +1,12 @@
-import { Link } from "react-router-dom";
+import { json } from "react-router-dom";
 
 import "./ResetPassword.scss";
-import { FaArrowLeft } from "react-icons/fa";
-import Input from "../../../components/input/Input";
-import Button from "../../../components/button/Button";
-import backgroundImage from "../../../data/img/background.jpg";
+import ResetPasswordForm from "../../../components/resetPassword-form/ResetPasswordForm";
+import { authService } from "../../../services/api/auth.service";
 
 const ResetPassword = () => {
 	return (
-		<div
-			className="container-wrapper"
-			style={{ backgroundImage: `url(${backgroundImage})` }}
-		>
+		<div className="container-wrapper">
 			<div className="container-wrapper-auth">
 				<div className="tabs reset-password-tabs">
 					<div className="tabs-auth">
@@ -21,44 +16,7 @@ const ResetPassword = () => {
 							</li>
 						</ul>
 						<div className="tab-item">
-							<div className="auth-inner">
-								<div className="alerts" role="alert">
-									Error message
-								</div>
-								<form className="reset-password-form">
-									<div className="form-input-container">
-										<Input
-											id="password"
-											name="password"
-											type="password"
-											value="my password"
-											labelText="New Password"
-											placeholder="New Password"
-											handleChange={() => {}}
-										/>
-										<Input
-											id="cpassword"
-											name="cpassword"
-											type="password"
-											value="my confirm password"
-											labelText="Confirm Password"
-											placeholder="Confirm Password"
-											onChange={() => {}}
-										/>
-									</div>
-									<Button
-										text="RESET PASSWORD"
-										className="auth-button button"
-										disabled={false}
-									/>
-
-									<Link to={"/"}>
-										<span className="login">
-											<FaArrowLeft className="arrow-left" /> Back to Login
-										</span>
-									</Link>
-								</form>
-							</div>
+							<ResetPasswordForm action="reset password" />
 						</div>
 					</div>
 				</div>
@@ -68,3 +26,28 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
+export async function action({ request }) {
+	const queryParams = new URLSearchParams(window.location.search);
+	const token = queryParams.get("token");
+
+	if (!token) return json({ status: "error", message: "Invalid token." });
+
+	const data = await request.formData();
+
+	const password = data.get("password");
+	const confirmPassword = data.get("confirmPassword");
+
+	const response = await authService.resetPassword(
+		{
+			password,
+			confirmPassword,
+		},
+		token
+	);
+	if (response.status === 404)
+		return json({ status: "error", message: "Server unavilable." });
+	console.log(response);
+
+	return response;
+}

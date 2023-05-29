@@ -3,7 +3,7 @@ import excited from "../../data/img/excited.jpg";
 import happy from "../../data/img/happy.jpg";
 import loved from "../../data/img/loved.jpg";
 import angry from "../../data/img/angry.png";
-import haha from "../../data/img/haha.png";
+import haha from "../../data/img/happy.png";
 import like from "../../data/img/like.png";
 import love from "../../data/img/love.png";
 import sad from "../../data/img/sad.png";

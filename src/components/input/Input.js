@@ -12,6 +12,8 @@ function Input({
 	text,
 	placeholder,
 	onChange,
+	onBlur,
+	autoComplete,
 }) {
 	return (
 		<>
@@ -27,8 +29,10 @@ function Input({
 					type={type}
 					value={value}
 					onChange={onChange}
+					onBlur={onBlur}
 					placeholder={placeholder}
 					className={`form-input ${className}`}
+					autoComplete={autoComplete}
 				></input>
 			</div>
 		</>
@@ -44,6 +48,14 @@ Input.propTypes = {
 	text: PropTypes.string,
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func,
+	onBlur: PropTypes.func,
+	autoComplete: PropTypes.string,
+};
+
+Input.defaultProps = {
+	onChange: () => {},
+	onBlur: () => {},
+	autoComplete: "off",
 };
 
 export default Input;

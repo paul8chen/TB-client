@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+import { json } from "react-router-dom";
 
 import "./ForgotPassword.scss";
-import { FaArrowLeft } from "react-icons/fa";
-import Input from "../../../components/input/Input";
-import Button from "../../../components/button/Button";
+import AuthForm from "../../../components/auth-form/AuthForm";
+import { authService } from "../../../services/api/auth.service";
 
 const ForgotPassword = () => {
 	return (
@@ -18,35 +17,7 @@ const ForgotPassword = () => {
 						</ul>
 
 						<div className="tab-item">
-							<div className="auth-inner">
-								<div className="alerts" role="alert">
-									Error message
-								</div>
-								<form className="forgot-password-form">
-									<div className="form-input-container">
-										<Input
-											id="email"
-											name="email"
-											type="email"
-											value="my email"
-											text="Email"
-											placeholder="Email"
-											onChange={() => {}}
-										/>
-									</div>
-									<Button
-										text="FORGOT PASSWORD"
-										className="auth-button button"
-										disabled={false}
-									/>
-
-									<Link to={"/"}>
-										<span className="login">
-											<FaArrowLeft className="arrow-left" /> Back to Login
-										</span>
-									</Link>
-								</form>
-							</div>
+							<AuthForm action="forgot password" inputs={["email"]} />
 						</div>
 					</div>
 				</div>
@@ -56,3 +27,17 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+
+export async function action({ request }) {
+	const data = await request.formData();
+	const email = data.get("email");
+
+	const response = await authService.forgotPassword({
+		email,
+	});
+
+	if (response.status === 404)
+		return json({ status: "error", message: "Server unavilable." });
+
+	return response;
+}
