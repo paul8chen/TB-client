@@ -1,8 +1,8 @@
 import { json } from "react-router-dom";
 
-import "./ForgotPassword.scss";
-import AuthForm from "../../../components/auth-form/AuthForm";
-import { authService } from "../../../services/api/auth.service";
+import "@pages/auth/forgot-password/ForgotPassword.scss";
+import AuthForm from "@components/auth-form/AuthForm";
+import { authService } from "@services/api/auth.service";
 
 const ForgotPassword = () => {
 	return (

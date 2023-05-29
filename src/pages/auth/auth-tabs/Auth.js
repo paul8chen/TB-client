@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { json } from "react-router-dom";
 
-import "./Auth.scss";
-import { authService } from "../../../services/api/auth.service";
-import AuthForm from "../../../components/auth-form/AuthForm";
-import { Utlis } from "../../../services/utils/utils.service";
+import "@pages/auth/auth-tabs/Auth.scss";
+import { authService } from "@services/api/auth.service";
+import AuthForm from "@components/auth-form/AuthForm";
+import { Utlis } from "@services/utils/utils.service";
 
 const Auth = () => {
 	const [authTab, setAuthTab] = useState("login");

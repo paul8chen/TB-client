@@ -1,5 +1,6 @@
 import { floor, random } from "lodash";
-import { avatarColors } from "./static.data";
+
+import { avatarColors } from "@services/utils/static.data";
 
 export class Utlis {
 	static avatarColor() {

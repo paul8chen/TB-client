@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Form, useActionData, useNavigation, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
-import "./ResetPasswordForm.scss";
-import InputConfirmPassword from "../input-confirmPassword/InputConfirmPassword";
-import Button from "../button/Button";
+import "@components/resetPassword-form/ResetPasswordForm.scss";
+import InputConfirmPassword from "@components/input-confirmPassword/InputConfirmPassword";
+import Button from "@components/button/Button";
 
 const AuthForm = ({ action }) => {
 	const [showMessage, setShowMessage] = useState(null);

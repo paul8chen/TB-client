@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import "./InputValidator.scss";
-import Input from "../input/Input";
-import { inputValidator } from "../../services/utils/inputValidator";
+import "@components/input-validator/InputValidator.scss";
+import Input from "@components/input/Input";
+import { inputValidator } from "@services/utils/inputValidator";
 
 function InputValidator({ id, name, type, text, placeholder, autoComplete }) {
 	const [input, setInput] = useState("");

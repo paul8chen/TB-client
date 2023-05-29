@@ -1,4 +1,4 @@
-import BaseService from "./BaseService";
+import BaseService from "@services/api/BaseService";
 
 class AuthService extends BaseService {
 	constructor() {

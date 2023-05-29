@@ -1,8 +1,8 @@
 import { json } from "react-router-dom";
 
-import "./ResetPassword.scss";
-import ResetPasswordForm from "../../../components/resetPassword-form/ResetPasswordForm";
-import { authService } from "../../../services/api/auth.service";
+import "@pages/auth/reset-password/ResetPassword.scss";
+import ResetPasswordForm from "@components/resetPassword-form/ResetPasswordForm";
+import { authService } from "@services/api/auth.service";
 
 const ResetPassword = () => {
 	return (

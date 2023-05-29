@@ -1,17 +1,22 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { Form, useActionData, useNavigation, Link } from "react-router-dom";
+import {
+	Form,
+	useActionData,
+	useNavigation,
+	Link,
+	useNavigate,
+} from "react-router-dom";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
-import "./AuthForm.scss";
-import InputValidator from "../input-validator/InputValidator";
-import Button from "../button/Button";
+import "@components/auth-form/AuthForm.scss";
+import InputValidator from "@components/input-validator/InputValidator";
+import Button from "@components/button/Button";
 
 const AuthForm = ({ action, inputs }) => {
 	const [showMessage, setShowMessage] = useState(null);
 
 	const actionData = useActionData();
-	console.log("actionData", actionData);
 	const status = actionData?.status;
 	const message = actionData?.message;
 	const isError = status === "error";
@@ -20,18 +25,22 @@ const AuthForm = ({ action, inputs }) => {
 	const navigation = useNavigation();
 	const isSubmitting = navigation.state === "submitting";
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (isError | isSuccess) {
-			console.log("useEffect");
 			setShowMessage(true);
 			const messageTimeout = setTimeout(() => {
 				setShowMessage(null);
+				if (isSuccess) {
+					navigate("/app/social/streams");
+				}
 			}, 2000);
 			return () => {
 				clearTimeout(messageTimeout);
 			};
 		}
-	}, [isError, isSuccess, setShowMessage, isSubmitting]);
+	}, [isError, isSuccess, setShowMessage, isSubmitting, navigate]);
 
 	return (
 		<div className="auth-inner">

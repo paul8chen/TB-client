@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import "./InputConfirmPassword.scss";
-import Input from "../input/Input";
-import { inputValidator } from "../../services/utils/inputValidator";
+import "@components/input-confirmPassword/InputConfirmPassword.scss";
+import Input from "@components/input/Input";
+import { inputValidator } from "@services/utils/inputValidator";
 
 const InputConfirmPassword = () => {
 	// Validation of confirm password and password
