@@ -27,17 +27,24 @@ class StockService extends BaseService {
 		);
 	}
 
-	async getTick(uId) {
+	getTick(uId) {
 		return this.postData(`/get-tick`, { uId }, "POST");
 	}
 
-	async getIndicator(tickId) {
-		await new Promise((resolve) =>
-			setTimeout(() => {
-				resolve();
-			}, 5000)
-		);
+	getIndicator(tickId) {
 		return this.getData(`/get-tick-indicator/${tickId}`);
+	}
+
+	addIndicator(indicatorType, data) {
+		return this.postData(`/add-${indicatorType}`, data, "POST");
+	}
+
+	updateIndicator(indicatorType, data) {
+		return this.postData(`/update-${indicatorType}`, data, "PATCH");
+	}
+
+	deleteIndicator(indicatorType, data) {
+		return this.postData(`/delete-${indicatorType}`, data, "DELETE");
 	}
 }
 

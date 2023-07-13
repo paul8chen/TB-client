@@ -15,6 +15,7 @@ import {
 	setValue,
 } from "@store/reducers/chartPanelReducer";
 import { addIndicator, updateIndicator } from "@store/reducers/chartReducer";
+import { stockService } from "@services/api/stock.service";
 
 const candlestickTypeOptions = [
 	"Bullish Candlestick",
@@ -25,7 +26,7 @@ const candlestickTypeOptions = [
 function ChartCandlestickForm({ editId, isActive }) {
 	// console.log("render chart-maForm");
 	const dispatch = useDispatch();
-
+	const { tickId } = useSelector((state) => state.chart);
 	const {
 		value: bodyRatio,
 		upperShadow,
@@ -214,6 +215,13 @@ function ChartCandlestickForm({ editId, isActive }) {
 	const setCandlestickBtnClickHandler = async (event) => {
 		event.preventDefault();
 
+		const indicatorDataToDB = {
+			bodyRatio,
+			upperShadow,
+			lowerShadow,
+			candlestickType,
+		};
+
 		const indicatorData = {
 			...chartData,
 			stockData,
@@ -223,15 +231,26 @@ function ChartCandlestickForm({ editId, isActive }) {
 			candlestickType,
 		};
 
-		!editId &&
+		if (!editId) {
 			dispatch(
-				addIndicator({ indicatorData: { id: +new Date(), ...indicatorData } })
+				addIndicator({
+					indicatorData: { id: "" + +new Date(), ...indicatorData },
+				})
 			);
 
-		editId &&
+			indicatorDataToDB.TickId = tickId;
+			indicatorDataToDB.indicatorType = "candlestick";
+			stockService.addIndicator("candlestick", indicatorDataToDB);
+		}
+
+		if (editId) {
 			dispatch(
 				updateIndicator({ id: editId, updatedIndicatorData: indicatorData })
 			);
+
+			indicatorDataToDB.id = editId;
+			stockService.updateIndicator("candlestick", indicatorDataToDB);
+		}
 
 		dispatch(clearCurrent());
 	};

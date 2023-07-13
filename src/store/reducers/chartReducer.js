@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ChartUtils } from "@services/utils/chart.utils";
 import { getIndicatorData } from "@store/api/chartReducer";
 
 const initialState = {
@@ -38,11 +39,11 @@ const chartSlice = createSlice({
 		updateIndicator(state, action) {
 			const { id } = action.payload;
 			const indicatorIndex = state.indicators.findIndex((ind) => ind.id === id);
-			console.log("❤updatedIndicatorData❤");
+
 			if (indicatorIndex === -1) return;
 
 			const { updatedIndicatorData } = action.payload;
-			console.log("❤updatedIndicatorData❤", updatedIndicatorData);
+
 			const indicatorData = { ...state.indicators[indicatorIndex] };
 
 			state.indicators[indicatorIndex] = Object.assign(indicatorData, {
@@ -80,6 +81,7 @@ const chartSlice = createSlice({
 
 		toggleIndicator(state, action) {
 			const { id, indicatorData } = action.payload;
+
 			const selectedIndicators = state.indicators.filter((ind) => ind.selected);
 
 			if (removeArrayItemById(selectedIndicators, id)) {
@@ -130,11 +132,19 @@ const chartSlice = createSlice({
 		});
 		builder.addCase(getIndicatorData.fulfilled, (state, action) => {
 			const { data } = action.payload;
-			console.log("💥EXTRA REDUCER: FULFILLED 💥 ", data);
+			console.log("💥DATA UNSORTED", data.indicatorData);
+			data.indicatorData.sort(
+				({ createdAt: a }, { createdAt: b }) => new Date(a) - new Date(b)
+			);
+			console.log("💥DATA SORTED", data.indicatorData);
+			const indicatorData = data.indicatorData.map((dbData) =>
+				ChartUtils.convertDBDataToIndicatorData(dbData)
+			);
+
+			state.indicators = [...indicatorData];
 			state.isIndicatorLoading = false;
 		});
 		builder.addCase(getIndicatorData.rejected, (state, action) => {
-			console.log("💥EXTRA REDUCER: REJECTED 💥 ", action.payload);
 			state.isIndicatorLoading = false;
 		});
 	},

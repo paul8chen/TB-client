@@ -21,11 +21,12 @@ import {
 	updateIndicator,
 	toggleChartClickable,
 } from "@store/reducers/chartReducer";
+import { stockService } from "@services/api/stock.service";
 
 function ChartPriceForm({ editId, isActive }) {
 	// console.log("render chart-priceForm");
 	const dispatch = useDispatch();
-	const { chartClickable } = useSelector((state) => state.chart);
+	const { chartClickable, tickId } = useSelector((state) => state.chart);
 	const {
 		value: price,
 		date,
@@ -180,6 +181,14 @@ function ChartPriceForm({ editId, isActive }) {
 
 		if (!price) return setInvalidInput("PRICE");
 
+		const indicatorDataToDB = {
+			price,
+			date,
+			color,
+			breakRatio,
+			isAbove,
+		};
+
 		const indicatorData = {
 			...chartData,
 			stockData,
@@ -188,15 +197,26 @@ function ChartPriceForm({ editId, isActive }) {
 			isAbove,
 		};
 
-		!editId &&
+		if (!editId) {
 			dispatch(
-				addIndicator({ indicatorData: { id: +new Date(), ...indicatorData } })
+				addIndicator({
+					indicatorData: { id: "" + +new Date(), ...indicatorData },
+				})
 			);
 
-		editId &&
+			indicatorDataToDB.TickId = tickId;
+			indicatorDataToDB.indicatorType = "price";
+			stockService.addIndicator("price", indicatorDataToDB);
+		}
+
+		if (editId) {
 			dispatch(
 				updateIndicator({ id: editId, updatedIndicatorData: indicatorData })
 			);
+
+			indicatorDataToDB.id = editId;
+			stockService.updateIndicator("price", indicatorDataToDB);
+		}
 
 		dispatch(clearCurrent());
 	};

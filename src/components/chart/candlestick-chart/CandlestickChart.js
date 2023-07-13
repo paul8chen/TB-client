@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { SlRocket } from "react-icons/sl";
 import { HiOutlineTrash } from "react-icons/hi";
 import { FiEdit2 } from "react-icons/fi";
-import FadeLoader from "@components/fade-loader/FadeLoader";
+import { cloneDeep } from "lodash";
 
+import FadeLoader from "@components/fade-loader/FadeLoader";
 import "@components/chart/candlestick-chart/CandlestickChart.scss";
 import { ChartUtils } from "@services/utils/chart.utils";
 import {
@@ -27,6 +28,7 @@ import {
 	setIsLoaded,
 	toggleIndicator,
 	setTickId,
+	updateIndicator,
 } from "@store/reducers/chartReducer";
 import { getIndicatorData } from "@store/api/chartReducer";
 import { Utils } from "@services/utils/utils.service";
@@ -157,7 +159,6 @@ function CandlestickChart({ stock }) {
 
 		if (current === "candlestick" && (value || candlestickType))
 			loadFilterdStockData = async () => {
-				console.log("💥sent request");
 				try {
 					const response = await stockService.getStockFilteredByCandlestick(
 						value,
@@ -168,7 +169,6 @@ function CandlestickChart({ stock }) {
 					const { stockData } = resData.data;
 
 					dispatch(setStockData({ filteredStockData: stockData }));
-					console.log("💥stockData: ", stockData);
 				} catch (err) {
 					console.log("Load candlestick filtered error", err);
 				}
@@ -220,9 +220,11 @@ function CandlestickChart({ stock }) {
 
 		const itemEl = event.target.closest(".indicator-item");
 		const { id: removedId } = itemEl.dataset;
+		const { indicatorType } = indicators.find((ind) => ind.id === removedId);
 
-		editId === +removedId && dispatch(clearCurrent());
-		dispatch(removeIndicator({ id: +removedId }));
+		editId === removedId && dispatch(clearCurrent());
+		dispatch(removeIndicator({ id: removedId }));
+		stockService.deleteIndicator(indicatorType, { id: removedId, tickId });
 	};
 
 	const editClickHandler = (event) => {
@@ -230,21 +232,34 @@ function CandlestickChart({ stock }) {
 
 		const itemEl = event.target.closest(".indicator-item");
 		const { id: editId } = itemEl.dataset;
-		const indicatorData = indicators.find((ind) => ind.id === +editId);
+		const indicatorData = indicators.find((ind) => ind.id === editId);
 		const current = indicatorData.indicatorType;
 		const panelData = ChartUtils.convertIndicatorDataToPanelData(indicatorData);
 
-		dispatch(setEditId({ id: +editId }));
+		dispatch(setEditId({ id: editId }));
 		dispatch(setCurrentAsEdit({ current, panelData }));
 	};
 
-	const indicatorItemClickHandler = (event) => {
+	const indicatorItemClickHandler = async (event) => {
 		const itemEl = event.target.closest(".indicator-item");
 		const { id: clickedId } = itemEl.dataset;
-		const indicatorData = indicators.find((ind) => ind.id === +clickedId);
+		const indicatorData = indicators.find((ind) => ind.id === clickedId);
+		const indicatorDataLoaded = cloneDeep(indicatorData);
+
+		if (!indicatorData.loaded && !itemEl.classList.contains("active")) {
+			await ChartUtils.loadStockData(indicatorDataLoaded);
+			dispatch(
+				updateIndicator({
+					id: clickedId,
+					updatedIndicatorData: indicatorDataLoaded,
+				})
+			);
+		}
 
 		dispatch(setPanelIsActive({ isActive: false }));
-		dispatch(toggleIndicator({ id: +clickedId, indicatorData }));
+		dispatch(
+			toggleIndicator({ id: clickedId, indicatorData: indicatorDataLoaded })
+		);
 	};
 	return (
 		<div className="candle-stick-chart-container">
@@ -286,49 +301,50 @@ function CandlestickChart({ stock }) {
 				<FadeLoader loading={isIndicatorLoading} />
 
 				<div className="indicator-body">
-					{indicators.map((indicator) => (
-						<div
-							className={`indicator-item ${
-								indicator.selected ? "active" : ""
-							} ${indicator.id === editId ? "editting" : ""}`}
-							key={indicator.id}
-							data-id={indicator.id}
-							onClick={indicatorItemClickHandler}
-						>
-							<p className="indicator-item-type">
-								{Utils.firstLetterUpperCase(indicator.indicatorType)}
-							</p>
-							{indicator.indicatorValue.map((value, index) => (
-								<p
-									className="indicator-item-value"
-									key={`${indicator.id}${index}`}
-								>
-									{value}
+					{!isIndicatorLoading &&
+						indicators.map((indicator) => (
+							<div
+								className={`indicator-item ${
+									indicator.selected ? "active" : ""
+								} ${indicator.id === editId ? "editting" : ""}`}
+								key={indicator.id}
+								data-id={indicator.id}
+								onClick={indicatorItemClickHandler}
+							>
+								<p className="indicator-item-type">
+									{Utils.firstLetterUpperCase(indicator.indicatorType)}
 								</p>
-							))}
-							{indicatorTypeWithStyle.includes(indicator.indicatorType) && (
-								<span
-									className="indicator-item-style"
-									style={{ borderColor: `${indicator.color}` }}
-								></span>
-							)}
+								{indicator.indicatorValue.map((value, index) => (
+									<p
+										className="indicator-item-value"
+										key={`${indicator.id}${index}`}
+									>
+										{value}
+									</p>
+								))}
+								{indicatorTypeWithStyle.includes(indicator.indicatorType) && (
+									<span
+										className="indicator-item-style"
+										style={{ borderColor: `${indicator.color}` }}
+									></span>
+								)}
 
-							<div className="indicator-item-option">
-								<div
-									className="indicator-item-option-update"
-									onClick={editClickHandler}
-								>
-									<FiEdit2 />
-								</div>
-								<div
-									className="indicator-item-option-delete"
-									onClick={deleteClickHandler}
-								>
-									<HiOutlineTrash />
+								<div className="indicator-item-option">
+									<div
+										className="indicator-item-option-update"
+										onClick={editClickHandler}
+									>
+										<FiEdit2 />
+									</div>
+									<div
+										className="indicator-item-option-delete"
+										onClick={deleteClickHandler}
+									>
+										<HiOutlineTrash />
+									</div>
 								</div>
 							</div>
-						</div>
-					))}
+						))}
 				</div>
 			</div>
 		</div>

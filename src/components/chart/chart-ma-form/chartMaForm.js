@@ -14,14 +14,14 @@ import {
 	setValue,
 	setMaBy,
 } from "@store/reducers/chartPanelReducer";
-
 import { addIndicator, updateIndicator } from "@store/reducers/chartReducer";
 import useInputInvalid from "@hooks/useInputInvalid";
+import { stockService } from "@services/api/stock.service";
 
 function ChartMaForm({ editId, isActive }) {
 	// console.log("render chart-maForm");
 	const dispatch = useDispatch();
-
+	const { tickId } = useSelector((state) => state.chart);
 	const {
 		value: ma,
 		maBy,
@@ -169,6 +169,14 @@ function ChartMaForm({ editId, isActive }) {
 
 		if (!ma) return setInvalidInput("MA");
 
+		const indicatorDataToDB = {
+			ma,
+			maBy,
+			color,
+			breakRatio,
+			isAbove,
+		};
+
 		const indicatorData = {
 			...chartData,
 			stockData,
@@ -178,15 +186,26 @@ function ChartMaForm({ editId, isActive }) {
 			isAbove,
 		};
 
-		!editId &&
+		if (!editId) {
 			dispatch(
-				addIndicator({ indicatorData: { id: +new Date(), ...indicatorData } })
+				addIndicator({
+					indicatorData: { id: "" + +new Date(), ...indicatorData },
+				})
 			);
 
-		editId &&
+			indicatorDataToDB.TickId = tickId;
+			indicatorDataToDB.indicatorType = "ma";
+			stockService.addIndicator("ma", indicatorDataToDB);
+		}
+
+		if (editId) {
 			dispatch(
 				updateIndicator({ id: editId, updatedIndicatorData: indicatorData })
 			);
+
+			indicatorDataToDB.id = editId;
+			stockService.updateIndicator("ma", indicatorDataToDB);
+		}
 
 		dispatch(clearCurrent());
 	};

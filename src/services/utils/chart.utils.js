@@ -1,4 +1,5 @@
 import { chart } from "@components/chart/candlestick-chart/CandlestickChart";
+import { stockService } from "@services/api/stock.service";
 
 const rootStyleEl = getComputedStyle(document.documentElement);
 const BACKGROUND_COLOR = rootStyleEl.getPropertyValue("--white-10");
@@ -192,6 +193,94 @@ export class ChartUtils {
 		});
 	}
 
+	static async loadStockData(indicatorData) {
+		const { indicatorType } = indicatorData;
+		indicatorData.loaded = true;
+		let stockData;
+		if (indicatorType === "price") {
+			const { stockData: stockData_ } = await ChartUtils.loadPriceStockData(
+				indicatorData
+			);
+			stockData = stockData_;
+		}
+
+		if (indicatorType === "ma" && !indicatorData.dataPoints.length) {
+			const { stockData: stockData_, maData } =
+				await ChartUtils.loadMaStockData(indicatorData);
+			stockData = stockData_;
+			indicatorData.dataPoints = maData;
+		}
+
+		if (indicatorType === "candlestick") {
+			console.log("💥indicatorData💥", indicatorData);
+			const { stockData: stockData_ } =
+				await ChartUtils.loadCandlestickStockData(indicatorData);
+			stockData = stockData_;
+			console.log("💥stockData💥", stockData_);
+		}
+
+		if (!stockData?.length) return;
+		indicatorData.stockData = stockData;
+	}
+
+	static async loadPriceStockData(indicatorData) {
+		const { breakRatio, isAbove, dataPoints } = indicatorData;
+		const { x: date, y: value } = dataPoints[0];
+		try {
+			const response = await stockService.getStockFilteredByPrice(
+				value,
+				new Date(date).toISOString(),
+				breakRatio,
+				isAbove
+			);
+			const resData = await response.json();
+			const { filteredData: stockData } = resData.data;
+
+			return { stockData };
+		} catch (err) {
+			console.log("Load price filtered error", err);
+		}
+	}
+
+	static async loadMaStockData(indicatorData) {
+		const { maBy, breakRatio, isAbove, indicatorValue } = indicatorData;
+		const value = indicatorValue[0];
+		try {
+			const response = await stockService.getStockFilteredByMA(
+				value,
+				maBy,
+				breakRatio,
+				isAbove
+			);
+			const resData = await response.json();
+			const { maData, stockData } = resData.data;
+
+			return { maData, stockData };
+		} catch (err) {
+			console.log("Load ma filtered error", err);
+		}
+	}
+
+	static async loadCandlestickStockData(indicatorData) {
+		const { upperShadow, candlestickType, indicatorValue } = indicatorData;
+		const value = indicatorValue[0];
+		console.log("💥LOADING💥");
+		try {
+			const response = await stockService.getStockFilteredByCandlestick(
+				value,
+				upperShadow,
+				candlestickType
+			);
+			const resData = await response.json();
+			console.log("💥resData💥", resData);
+			const { stockData } = resData.data;
+
+			return { stockData };
+		} catch (err) {
+			console.log("Load candlestick filtered error", err);
+		}
+	}
+
 	static getPriceDataPoints(stockData) {
 		return [stockData, { x: this.latestData.x, y: stockData.y }];
 	}
@@ -200,15 +289,85 @@ export class ChartUtils {
 		return [stockData];
 	}
 
+	static convertDBDataToIndicatorData(dBData) {
+		const { indicatorType } = dBData;
+
+		if (indicatorType === "price")
+			return ChartUtils.getPriceIndicatorData(dBData);
+
+		if (indicatorType === "ma") return ChartUtils.getMaIndicatorData(dBData);
+
+		if (indicatorType === "candlestick")
+			return ChartUtils.getCandlestickIndicatorData(dBData);
+	}
+
+	static getPriceIndicatorData(dBData) {
+		const { id, price, date, color, isAbove, breakRatio } = dBData;
+		const dataPoints = ChartUtils.getPriceDataPoints({
+			x: +new Date(+date),
+			y: price,
+		});
+		const chartData = { type: "line", markerType: "none", color, dataPoints };
+
+		return {
+			id,
+			...chartData,
+			stockData: [],
+			indicatorType: "price",
+			indicatorValue: [price],
+			breakRatio,
+			isAbove,
+			selected: false,
+		};
+	}
+
+	static getMaIndicatorData(DBData) {
+		const { id, ma, maBy, color, isAbove, breakRatio } = DBData;
+		const chartData = {
+			type: "line",
+			markerType: "none",
+			color,
+			dataPoints: [],
+		};
+
+		return {
+			id,
+			...chartData,
+			stockData: [],
+			indicatorType: "ma",
+			indicatorValue: [ma],
+			maBy,
+			breakRatio,
+			isAbove,
+			selected: false,
+		};
+	}
+
+	static getCandlestickIndicatorData(DBData) {
+		const { id, bodyRatio, upperShadow, lowerShadow, candlestickType } = DBData;
+
+		return {
+			id,
+			stockData: [],
+			indicatorType: "candlestick",
+			indicatorValue: [bodyRatio, upperShadow, lowerShadow, candlestickType],
+			upperShadow,
+			lowerShadow,
+			candlestickType,
+			selected: false,
+		};
+	}
+
 	static convertIndicatorDataToPanelData(indicatorData) {
 		const { indicatorType } = indicatorData;
 
-		if (indicatorType === "price") return this.getPricePanelData(indicatorData);
+		if (indicatorType === "price")
+			return ChartUtils.getPricePanelData(indicatorData);
 
-		if (indicatorType === "ma") return this.getMaPanelData(indicatorData);
+		if (indicatorType === "ma") return ChartUtils.getMaPanelData(indicatorData);
 
 		if (indicatorType === "candlestick")
-			return this.getCandlestickPanelData(indicatorData);
+			return ChartUtils.getCandlestickPanelData(indicatorData);
 	}
 
 	static getPricePanelData(indicatorData) {
@@ -239,7 +398,6 @@ export class ChartUtils {
 	static getCandlestickPanelData(indicatorData) {
 		const { indicatorValue, upperShadow, lowerShadow, candlestickType } =
 			indicatorData;
-		console.log("💥indicatorData: ", indicatorData);
 
 		return {
 			value: indicatorValue[0],
