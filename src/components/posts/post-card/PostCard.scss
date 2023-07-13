@@ -1,0 +1,132 @@
+.post-card {
+	max-width: 50rem;
+	display: flex;
+	flex-direction: column;
+	padding: 15px;
+	gap: 10px;
+	background-color: var(--white-1);
+	height: auto;
+	border-radius: 16px;
+	box-shadow: rgb(145 158 171 / 20%) 0 0 2px 0,
+		rgb(145 158 171 / 12%) 0 12px 24px -4px;
+
+	&.removed {
+		transition: all 0.5s;
+		transform: translateY(-30%);
+		opacity: 0;
+	}
+
+	&-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&-profile {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			&-img {
+				width: 50px;
+				height: 50px;
+			}
+
+			&-username {
+				display: flex;
+				flex-direction: column;
+				p {
+					font-size: 1.1rem;
+					font-family: Poppins, sans-serif;
+					font-weight: 700;
+					margin-right: 5px;
+					line-height: 1.5;
+					color: var(--gray-7);
+				}
+
+				&-time {
+					display: flex;
+					gap: 3px;
+					align-items: center;
+					font-size: 0.5rem;
+					color: var(--gray-3);
+				}
+			}
+		}
+
+		&-editable {
+			align-items: center;
+			display: flex;
+			gap: 20px;
+
+			&-option {
+				transition: all 0.5s;
+				animation: toast-in-right 0.5s;
+				max-height: 40px;
+				display: flex;
+				gap: 20px;
+				color: var(--gray-2);
+
+				&-delete {
+					height: 20px;
+					width: 20px;
+					stroke-width: 1.5;
+					color: var(--red-2);
+
+					&:hover {
+						cursor: pointer;
+						transform: scale(130%);
+					}
+				}
+
+				&-update {
+					height: 20px;
+					width: 20px;
+					stroke-width: 1.5;
+
+					&:hover {
+						cursor: pointer;
+						transform: scale(130%);
+					}
+				}
+			}
+		}
+	}
+
+	&-body {
+		padding: 0.5rem;
+		border: 1px var(--white-9) solid;
+		border-radius: 10px;
+		&-post {
+			word-wrap: break-word;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			font-size: 1rem;
+
+			&-img {
+				img {
+					aspect-ratio: 3 / 1;
+					width: 100%;
+					border-radius: 10px;
+					object-fit: cover;
+				}
+			}
+		}
+	}
+
+	// &-footer {
+	// 	max-height: 100%;
+	// }
+}
+
+@keyframes toast-in-right {
+	0% {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}

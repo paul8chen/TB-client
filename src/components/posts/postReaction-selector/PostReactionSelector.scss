@@ -1,0 +1,68 @@
+.reaction-select {
+	animation: toast-up 0.2s;
+	display: flex;
+	gap: 15px;
+	padding: 5px 15px;
+	background-color: var(--white-1);
+	box-shadow: rgb(145 158 171 / 20%) 0 0 5px 0,
+		rgb(145 158 171 / 12%) 0 20px 40px 10px;
+	border-radius: 30px;
+	position: absolute;
+	transform: translateY(-50%);
+	left: 0;
+	top: -35%;
+	overflow: visible;
+
+	&-item {
+		position: relative;
+
+		.icon-bg {
+			transition: all 0.25s;
+			border-radius: 50%;
+			box-shadow: rgb(145 158 171 / 20%) 0 0 5px 0,
+				rgb(145 158 171 / 12%) 0 20px 40px 10px;
+			width: 35px;
+			height: 35px;
+
+			&:hover {
+				transform: scale(130%);
+				cursor: pointer;
+			}
+		}
+
+		p {
+			color: var(--white-8);
+
+			font-weight: 700;
+			font-size: 12px;
+			text-transform: uppercase;
+			white-space: nowrap;
+			border-radius: 30px;
+			padding: 5px 10px;
+			background-color: var(--gray-7);
+			display: none;
+			position: absolute;
+			transform: translate(-50%, -50%);
+			left: 50%;
+			top: -50%;
+		}
+
+		&.active {
+			p {
+				display: inline-block;
+			}
+		}
+	}
+}
+
+@keyframes toast-up {
+	0% {
+		transform: translateY(0);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(-50%);
+		opacity: 1;
+	}
+}

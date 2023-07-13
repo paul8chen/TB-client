@@ -1,0 +1,82 @@
+.textArea-form {
+	position: relative;
+	display: flex;
+
+	textarea {
+		color: var(--gray-2);
+		min-height: 5rem;
+		font-size: 1rem;
+		resize: none;
+		border-radius: 10px;
+		padding: 0.5rem 1rem;
+		border: none;
+		width: 100%;
+		overflow: hidden;
+		background-color: var(--white-4);
+	}
+
+	.textArea-tool {
+		width: 100%;
+		position: absolute;
+		bottom: 0.5rem;
+		right: 0.5rem;
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		justify-content: flex-end;
+
+		.textArea-emojiPicker-wraper {
+			position: relative;
+
+			.icon {
+				display: block;
+				width: 1.2rem;
+				height: 1.2rem;
+				color: var(--primary-2);
+				&:hover {
+					cursor: pointer;
+				}
+			}
+
+			.textArea-emojiPicker {
+				position: absolute;
+				right: 50%;
+				top: 100%;
+			}
+		}
+
+		.textArea-btn {
+			border: none;
+
+			&.active {
+				.icon {
+					color: var(--primary-1);
+				}
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+
+			.icon {
+				display: block;
+				width: 1.3rem;
+				height: 1.3rem;
+				color: var(--gray-1);
+
+				&.loading {
+					animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+				}
+			}
+		}
+	}
+}
+
+@keyframes lds-roller {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

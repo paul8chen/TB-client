@@ -1,0 +1,231 @@
+.chart-panel-container {
+	margin: auto;
+
+	.chart-panel-layout {
+		display: flex;
+		gap: 1rem;
+		flex-direction: column;
+		justify-content: flex-start;
+
+		.chart-panel-navbar {
+			display: flex;
+			gap: 2rem;
+			position: relative;
+
+			&-item {
+				&.active {
+					p {
+						color: var(--gray-7);
+					}
+					.sliding-bar {
+						opacity: 1;
+					}
+
+					&.to-the-right {
+						.sliding-bar {
+							animation: to-the-right 0.3s;
+						}
+					}
+
+					&.to-the-left {
+						.sliding-bar {
+							animation: to-the-left 0.3s;
+						}
+					}
+				}
+
+				p {
+					font-weight: 600;
+					color: var(--gray-8);
+					font-size: 1rem;
+					margin-bottom: 0.3rem;
+					user-select: none;
+					&:hover {
+						color: var(--gray-1);
+						cursor: pointer;
+					}
+				}
+
+				.sliding-bar {
+					opacity: 0;
+					border: 2.5px solid var(--primary-1);
+					border-radius: 20px;
+					width: 100%;
+
+					&.editting {
+						border: 2.5px solid var(--yellow-5);
+					}
+				}
+			}
+
+			.sliding-bar-container {
+				position: absolute;
+				bottom: 0;
+				z-index: -1;
+				border: 2.5px var(--white-1) solid;
+				border-radius: 20px;
+				width: 100%;
+			}
+		}
+	}
+
+	.chart-panel-body {
+		position: relative;
+		user-select: none;
+		padding: 0.3rem 2rem;
+		background-color: var(--white-6);
+		border-radius: 10px;
+		box-shadow: 1px 5px 5px var(--gray-16);
+		height: 120px;
+		width: 100%;
+
+		.chart-panel-body-indicator {
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			gap: 5rem;
+			border-radius: 10px;
+		}
+
+		&.editting {
+			border-left: 10px var(--yellow-1) solid;
+		}
+
+		&-edit {
+			position: absolute;
+			border: 1px;
+			transform: translate(-50%, -50%);
+			height: 20px;
+			top: 15px;
+			left: 10px;
+		}
+
+		.chart-panel-body-input {
+			.form-label {
+				font-weight: 500;
+				font-size: 0.8rem;
+			}
+			.form-input {
+				width: 10rem;
+				height: 2rem;
+			}
+		}
+
+		.chart-panel-body-input-btn {
+			box-shadow: 1px 1px 1px var(--gray-16);
+			padding: 0.3rem 0.5rem;
+			border-radius: 5px;
+			margin-top: 0.5rem;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			background-color: var(--white-19);
+			border: 1px solid var(--gray-16);
+			transition: all;
+
+			&.active {
+				background-color: var(--white-15);
+				.icon {
+					transform: scale(140%);
+				}
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			&:active {
+				box-shadow: -1px -1px 1px var(--gray-16);
+			}
+
+			.icon {
+				color: var(--gray-9);
+			}
+			p {
+				font-size: 0.8rem;
+				font-weight: 500;
+				color: var(--gray-9);
+			}
+		}
+		.chart-panel-body-select {
+			.form-select-label {
+				font-weight: 500;
+				font-size: 0.8rem;
+			}
+			.form-select-input {
+				font-size: 1rem;
+				width: 10rem;
+				height: 2rem;
+			}
+		}
+		.chart-button {
+			margin: auto;
+			margin-right: 1rem;
+			margin-bottom: 1rem;
+			color: var(--white-8);
+			background-color: var(--primary-1);
+			border-color: var(--primary-1);
+			height: 2.5rem;
+			font-weight: 700;
+			word-spacing: 5px;
+			font-size: 0.8rem;
+			&:hover {
+				cursor: pointer;
+				color: var(--white-1);
+			}
+		}
+		.update-price-button-wrapper {
+			display: flex;
+			gap: 2rem;
+			margin: auto;
+			margin-right: 1rem;
+			margin-bottom: 1rem;
+
+			.chart-button {
+				border: none;
+				margin: 0;
+			}
+			.chart-button-cancel {
+				// border: none;
+				background-color: var(--white-3);
+				color: var(--gray-8);
+				&:hover {
+					color: var(--gray-7);
+				}
+			}
+
+			.chart-button-edit {
+				background-color: var(--yellow-5);
+				color: var(--yellow-6);
+				&:hover {
+					cursor: pointer;
+					color: var(--white-1);
+				}
+			}
+		}
+	}
+}
+
+@keyframes to-the-right {
+	0% {
+		transform: translateX(-100%);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(0%);
+		opacity: 1;
+	}
+}
+
+@keyframes to-the-left {
+	0% {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(0%);
+		opacity: 1;
+	}
+}

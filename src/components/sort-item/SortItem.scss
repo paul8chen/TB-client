@@ -1,0 +1,48 @@
+@mixin title-text-styles {
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
+.sort-table-post {
+	// background-color: red;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	transition: all 0.3s;
+	border-radius: 10px;
+
+	&:hover {
+		box-shadow: 1px 5px 5px var(--gray-16);
+		transform: scale(1.1);
+	}
+
+	.post-image {
+		flex: 0.5;
+		min-width: 30px;
+		max-width: 30px;
+	}
+	.post-title {
+		flex: auto;
+
+		@include title-text-styles;
+		color: var(--black-3);
+		font-weight: 600;
+		font-size: 15px;
+	}
+
+	.favorite-btn {
+		flex: 0.5;
+		background-color: var(--white);
+		color: var(--primary-1);
+		cursor: pointer;
+		&:hover {
+			opacity: 0.6;
+		}
+
+		.icon {
+			height: 30px;
+			width: 30px;
+		}
+	}
+}

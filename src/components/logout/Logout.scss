@@ -1,0 +1,23 @@
+.logout-container {
+	width: 100px;
+	background: var(--white-1);
+	border-radius: 5px;
+	z-index: 2;
+	margin-top: 10px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: rgb(145 158 171 / 20%) 0 0 2px 0,
+		rgb(145 158 171 / 12%) 0 12px 24px -4px;
+
+	.logout-button {
+		width: 100%;
+		color: var(--white-1);
+		background-color: var(--primary-1);
+		display: block;
+		font-weight: 700;
+		word-spacing: 5px;
+		cursor: pointer;
+	}
+}

@@ -4,7 +4,7 @@ class InputValidator {
 	passwordMessage;
 
 	usernameValidator(username) {
-		return this.validator("username", username, 6, /[^A-Za-z0-9_]/);
+		return this.validator("username", username, 5, /[^A-Za-z0-9_]/);
 	}
 
 	emailValidator = (email) => {

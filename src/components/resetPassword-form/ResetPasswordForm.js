@@ -48,19 +48,14 @@ const AuthForm = ({ action }) => {
 				<div className="form-input-container">
 					<InputConfirmPassword />
 				</div>
-				<Button
-					text={
-						isSubmitting
-							? "SUBMITTING..."
-							: action
-									.split(" ")
-									.map((act) => act.toUpperCase())
-									.join("  ")
-					}
-					className="button auth-button"
-					name="action"
-					value={action}
-				></Button>
+				<Button className="button auth-button" name="action" value={action}>
+					{isSubmitting
+						? "SUBMITTING..."
+						: action
+								.split(" ")
+								.map((act) => act.toUpperCase())
+								.join("  ")}
+				</Button>
 				<Link to={"/"} className="button login">
 					<FaArrowLeft className="arrow-left" />
 					<span>Back to Login</span>

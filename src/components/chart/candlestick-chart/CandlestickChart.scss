@@ -1,0 +1,142 @@
+.candle-stick-chart-container {
+	height: 600px;
+	display: flex;
+	gap: 1300px;
+	// justify-content: space-evenly;
+
+	.candle-stick-chart {
+		position: relative;
+		// background-color: red;
+
+		&-icon {
+			position: absolute;
+			// background-color: blue;
+			transform: translate(-50%, -50%);
+			top: 100px;
+			left: 50px;
+			height: 1.5rem;
+			width: 1.5rem;
+		}
+	}
+	.indicator-container {
+		width: 400px;
+		background-color: red;
+		.indicator-body {
+			padding: 0.25rem 1rem;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.3rem;
+
+			.indicator-item {
+				padding: 5px 10px;
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				user-select: none;
+
+				&.editting {
+					padding: 4px 9px;
+					border-radius: 5px;
+					// border: 1px solid var(--yellow-5);
+					background-color: var(--yellow-1);
+					box-shadow: 1px 5px 5px var(--gray-16);
+					.indicator-item-option {
+						display: flex;
+					}
+				}
+
+				&.active {
+					// background-color: var(--primary-3);
+					// box-shadow: 1px 5px 5px var(--gray-16);
+					// border-radius: 5px;
+					.indicator-item-style {
+						border: 3px solid var(--primary-2);
+						border-radius: 50px;
+					}
+					.indicator-item-value {
+						font-size: 1rem;
+						font-weight: 600;
+						color: var(--gray-11);
+					}
+				}
+				&:hover {
+					cursor: pointer;
+					padding: 4px 9px;
+					border-radius: 5px;
+					border: 1px solid var(--white-15);
+					.indicator-item-option {
+						display: flex;
+					}
+				}
+
+				&-type {
+					align-self: baseline;
+					color: var(--gray-2);
+					font-size: 0.8rem;
+					font-weight: 700;
+				}
+				&-value {
+					align-self: baseline;
+					color: var(--gray-6);
+					font-size: 0.8rem;
+				}
+
+				&-style {
+					border: 1px solid var(--primary-1);
+					width: 2rem;
+					align-self: center;
+				}
+
+				&-option {
+					display: none;
+					transition: all 0.5s;
+					max-height: 40px;
+					align-items: center;
+					gap: 0.5rem;
+					color: var(--gray-2);
+					margin-left: 0.5rem;
+
+					&-delete {
+						height: 20px;
+						width: 20px;
+						stroke-width: 1.5;
+						color: var(--red-2);
+
+						&:hover {
+							cursor: pointer;
+							transform: scale(120%);
+						}
+					}
+
+					&-update {
+						height: 20px;
+						width: 20px;
+						stroke-width: 1.5;
+
+						&:hover {
+							cursor: pointer;
+							transform: scale(120%);
+						}
+					}
+				}
+
+				&:last-child {
+					animation: toast-upward 0.8s;
+				}
+			}
+		}
+	}
+}
+
+@keyframes toast-upward {
+	0% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}

@@ -1,8 +1,9 @@
 import { floor, random } from "lodash";
 
 import { avatarColors } from "@services/utils/static.data";
+import { addUser, removeUser } from "@store/reducers/userReducer";
 
-export class Utlis {
+export class Utils {
 	static avatarColor() {
 		return avatarColors[floor(random(0.9) * avatarColors.length)];
 	}
@@ -26,4 +27,28 @@ export class Utlis {
 
 		return canvas.toDataURL("image/png");
 	}
+
+	static saveUserStorage(result, setUsernameLocal, setUIdLocal, dispatch) {
+		const { token, user: profile } = result;
+		console.log("💥profile💥", profile);
+		setUsernameLocal(profile.username);
+		setUIdLocal(profile.uId);
+		dispatch(addUser({ token, profile }));
+	}
+
+	static clearUserStorage(deleteUsernameLocal, dispatch) {
+		deleteUsernameLocal();
+		dispatch(removeUser());
+	}
+
+	static getISOStringDate(timestamp) {
+		return new Date(timestamp).toISOString().substring(0, 10);
+	}
+
+	static firstLetterUpperCase(string) {
+		return string.slice(0, 1).toUpperCase() + string.slice(1);
+	}
+
+	static getStringFirstCharacterLowerCase = (string) =>
+		string.split(" ")[0].toLowerCase();
 }
