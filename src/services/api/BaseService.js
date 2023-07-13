@@ -11,12 +11,12 @@ export default class BaseService {
 		this.route = route;
 	}
 
-	postData = (url, body) => {
+	postData = (url, body, method) => {
 		return fetch(
-			`${process.env.REACT_APP_SERVER_BASE_URL}${this.route}${url}`,
+			`${process.env.REACT_APP_SERVER_BASE_URL}${process.env.REACT_APP_API_VERSION}${this.route}${url}`,
 			{
-				method: "POST",
-				body: JSON.stringify(body),
+				method: method || "POST",
+				body: body ? JSON.stringify(body) : undefined,
 				headers: this.headers,
 				credentials: this.credentials,
 			}
@@ -24,8 +24,11 @@ export default class BaseService {
 	};
 
 	getData = (url) =>
-		fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${this.route}${url}`, {
-			headers: this.headers,
-			credentials: this.credentials,
-		});
+		fetch(
+			`${process.env.REACT_APP_SERVER_BASE_URL}${process.env.REACT_APP_API_VERSION}${this.route}${url}`,
+			{
+				headers: this.headers,
+				credentials: this.credentials,
+			}
+		);
 }

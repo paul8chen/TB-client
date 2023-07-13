@@ -1,0 +1,37 @@
+.root-dashboard {
+	display: flex;
+
+	.root-sidebar {
+		flex: 2;
+		max-width: 10%;
+	}
+
+	.root-content {
+		padding: 2rem;
+		flex: 6;
+		height: 100vh;
+	}
+}
+
+.root-modal {
+	z-index: 999;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-color: rgba($color: #000000, $alpha: 0.5);
+	backdrop-filter: blur(1px);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	.modal-wrapper {
+		max-height: 100%;
+		border-radius: 10px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: var(--white-1);
+	}
+}

@@ -1,30 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function Button({ text, className, disabled, onClick, name, value }) {
+import "@components/button/Button.scss";
+
+function Button({ className, disabled, onClick, name, value, children }) {
 	return (
 		<>
 			<button
 				type="submit"
-				className={className}
+				className={`button ${className}`}
 				onClick={onClick}
 				disabled={disabled}
 				name={name}
 				value={value}
 			>
-				{text}
+				{children}
 			</button>
 		</>
 	);
 }
 
 Button.propTypes = {
-	text: PropTypes.string.isRequired,
 	className: PropTypes.string,
 	disabled: PropTypes.bool,
 	onClick: PropTypes.func,
 	name: PropTypes.string,
 	value: PropTypes.string,
+	children: PropTypes.any,
 };
 
 Button.defaultProps = {

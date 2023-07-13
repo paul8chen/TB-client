@@ -4,7 +4,7 @@ import { json } from "react-router-dom";
 import "@pages/auth/auth-tabs/Auth.scss";
 import { authService } from "@services/api/auth.service";
 import AuthForm from "@components/auth-form/AuthForm";
-import { Utlis } from "@services/utils/utils.service";
+import { Utils } from "@services/utils/utils.service";
 
 const Auth = () => {
 	const [authTab, setAuthTab] = useState("login");
@@ -64,8 +64,8 @@ export async function action({ request }) {
 	let response;
 	if (action === "signup") {
 		const email = data.get("email");
-		const avatarColor = Utlis.avatarColor();
-		const avatarImage = Utlis.generateAvatar(
+		const avatarColor = Utils.avatarColor();
+		const avatarImage = Utils.generateAvatar(
 			username.charAt(0).toUpperCase(),
 			avatarColor
 		);
@@ -74,7 +74,6 @@ export async function action({ request }) {
 			email,
 			username,
 			password,
-			avatarColor,
 			avatarImage,
 		});
 	}

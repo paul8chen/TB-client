@@ -1,0 +1,17 @@
+.post-reaction-icon {
+	display: flex;
+
+	.icon {
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		background-color: var(--white-6);
+		margin-right: -3px;
+	}
+
+	p {
+		margin-left: 15px;
+		margin-right: 10px;
+		color: var(--gray-3);
+	}
+}

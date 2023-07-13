@@ -56,32 +56,36 @@
 		a:hover {
 			color: var(--primary-1);
 		}
-		.forgot-password {
+
+		.action-button {
 			display: flex;
-			margin-top: 5px;
-			padding-top: 10px;
-			cursor: pointer;
-			gap: 5px;
 			justify-content: flex-end;
-		}
-		.arrow-right {
-			margin-top: 2px;
-		}
+			.forgot-password {
+				display: flex;
 
-		.login {
-			display: flex;
-			padding-top: 10px;
-			cursor: pointer;
-			justify-content: flex-start;
-			gap: 5px;
-
-			&:hover {
-				color: var(--primary-1);
+				cursor: pointer;
+				gap: 5px;
+				justify-content: flex-end;
 			}
-		}
-		.arrow-left {
-			margin-right: 2px;
-			margin-top: 2px;
+			.arrow-right {
+				margin-top: 2px;
+			}
+
+			.login {
+				display: flex;
+				padding-top: 10px;
+				cursor: pointer;
+				justify-content: flex-start;
+				gap: 5px;
+
+				&:hover {
+					color: var(--primary-1);
+				}
+			}
+			.arrow-left {
+				margin-right: 2px;
+				margin-top: 2px;
+			}
 		}
 	}
 }

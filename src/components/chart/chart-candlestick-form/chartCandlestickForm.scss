@@ -1,0 +1,26 @@
+.chart-panel-body-indicator {
+	.candlestick-ratio {
+		width: 200px;
+		.chart-panel-body-select {
+			.form-select-input {
+				width: 200px;
+			}
+		}
+
+		.chart-panel-body-input-btn {
+			width: fit-content;
+			// margin-top: 20px;
+		}
+	}
+
+	.chart-panel-body-select-with-canvas {
+		position: relative;
+
+		.candlestick-canvas {
+			position: absolute;
+			transform: translate(-50%, -50%);
+			left: 115%;
+			top: 65%;
+		}
+	}
+}

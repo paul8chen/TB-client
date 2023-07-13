@@ -20,6 +20,10 @@ class AuthService extends BaseService {
 	resetPassword(body, token) {
 		return this.postData(`/reset-password?token=${token}`, body);
 	}
+
+	logout() {
+		return this.getData("/logout");
+	}
 }
 
 export const authService = new AuthService();

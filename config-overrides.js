@@ -8,7 +8,7 @@ const aliasMap = {
 	"@mocks": "src/mocks",
 	"@data": "src/data",
 	"@colors": "src/colors",
-	"@redux": "src/redux",
+	"@store": "src/store",
 	"@root": "src",
 };
 

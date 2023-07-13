@@ -1,0 +1,16 @@
+.post-comment-container {
+	display: flex;
+	flex-direction: column;
+	max-height: 20rem;
+	gap: 5px;
+	overflow-x: hidden;
+
+	&-bottom {
+		border: 1px solid var(--white-1);
+	}
+	&-spinner {
+		flex: 1;
+		margin-top: 20px;
+		position: relative;
+	}
+}

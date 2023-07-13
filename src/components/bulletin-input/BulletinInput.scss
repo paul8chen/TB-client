@@ -1,0 +1,32 @@
+.bulletin-input {
+	height: 60px;
+	padding: 10px 15px;
+	width: 100%;
+	border-bottom: 1px solid var(--white-4);
+	display: flex;
+	align-items: center;
+	overflow-x: hidden;
+	cursor: pointer;
+
+	&.deactivate {
+		display: none;
+	}
+
+	.input-name {
+		.text {
+			overflow-x: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			max-width: 180px;
+			display: inline-block;
+			font-weight: 700;
+			padding: 5px 10px;
+			background-color: var(--white-1);
+			border-radius: 20px;
+			border: solid var(--white-4) 2px;
+			font-size: 15px;
+			color: var(--gray-4);
+			// display: none;
+		}
+	}
+}
