@@ -57,7 +57,7 @@ function PostInteraction({ post, editable, showComment }) {
 		postReactionReducer,
 		postReactionInitState
 	);
-	console.log("postReaction", postReaction);
+
 	const [currentReaction, setCurrentReaction] = useState();
 	const actionReactionRef = useRef();
 	const postReactionSelectorRef = useRef();
@@ -253,11 +253,6 @@ function PostInteraction({ post, editable, showComment }) {
 					<TextAreaInput
 						value={showUpdateCommentInput.comment}
 						onSubmit={postCommentSubmitHandler}
-						emojiPickerStyle={{
-							position: "fixed",
-							left: "70%",
-							top: "40%",
-						}}
 					/>
 				</div>
 			)}

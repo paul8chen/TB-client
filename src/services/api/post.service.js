@@ -5,6 +5,10 @@ class PostService extends BaseService {
 		super("/post");
 	}
 
+	createPost(data) {
+		return this.postData("/create-post", data, "POST");
+	}
+
 	getPost(page) {
 		return this.getData(`/get-post/${page}`);
 	}

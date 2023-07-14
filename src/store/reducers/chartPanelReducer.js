@@ -52,13 +52,16 @@ const initialState = {
 		value: 0.5,
 		upperShadow: 0.25,
 		lowerShadow: 0.25,
+		isShadowDisabledClicked: false,
+		isBodyDisabledClicked: false,
+		isCandlestickTypeDisabledClicked: false,
 		candlestickType: "bullish",
 		stockData: [],
 		chartData: {
 			indicatorType: "candlestick",
 		},
 	},
-	post: { isIndicator: false },
+	publish: { isIndicator: false },
 	backtesting: { isIndicator: false },
 };
 
@@ -166,6 +169,25 @@ const chartPanelSlice = createSlice({
 			state.candlestick.upperShadow = upperShadow;
 			state.candlestick.lowerShadow = lowerShadow;
 		},
+
+		setIsShadowDisabledClicked(state, action) {
+			state.candlestick.isShadowDisabledClicked = action.payload;
+		},
+
+		toggleIsShadowDisabledClicked(state) {
+			state.candlestick.isShadowDisabledClicked =
+				!state.candlestick.isShadowDisabledClicked;
+		},
+
+		toggleIsBodyDisabledClicked(state) {
+			state.candlestick.isBodyDisabledClicked =
+				!state.candlestick.isBodyDisabledClicked;
+		},
+
+		toggleIsCandlestickTypeDisabledClicked(state) {
+			state.candlestick.isCandlestickTypeDisabledClicked =
+				!state.candlestick.isCandlestickTypeDisabledClicked;
+		},
 	},
 });
 
@@ -186,6 +208,10 @@ export const {
 	setMaBy,
 	setCandlestickType,
 	setShadow,
+	setIsShadowDisabledClicked,
+	toggleIsShadowDisabledClicked,
+	toggleIsBodyDisabledClicked,
+	toggleIsCandlestickTypeDisabledClicked,
 } = chartPanelSlice.actions;
 
 export default chartPanelSlice.reducer;

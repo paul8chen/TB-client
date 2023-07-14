@@ -11,8 +11,12 @@ import Select from "@components/select/Select";
 import {
 	clearCurrent,
 	setCandlestickType,
+	setIsShadowDisabledClicked,
 	setShadow,
 	setValue,
+	toggleIsBodyDisabledClicked,
+	toggleIsCandlestickTypeDisabledClicked,
+	toggleIsShadowDisabledClicked,
 } from "@store/reducers/chartPanelReducer";
 import { addIndicator, updateIndicator } from "@store/reducers/chartReducer";
 import { stockService } from "@services/api/stock.service";
@@ -34,6 +38,9 @@ function ChartCandlestickForm({ editId, isActive }) {
 		candlestickType,
 		stockData,
 		chartData,
+		isBodyDisabledClicked,
+		isShadowDisabledClicked,
+		isCandlestickTypeDisabledClicked,
 	} = useSelector((state) => state.chartPanel[state.chartPanel.current]);
 
 	const [enteredBodyRatio, setEnteredBodyRatio] = useState("" + bodyRatio);
@@ -45,36 +52,31 @@ function ChartCandlestickForm({ editId, isActive }) {
 	);
 	const [isUpperShadowLock, setIsUpperShadowLock] = useState(true);
 	const [isSetRatioLock, setIsSetRatioLock] = useState(true);
-	const [isBodyDisabledClicked, setIsBodyDisabledClicked] = useState(
-		!bodyRatio
-	);
-	const [isShadowDisabledClicked, setIsShadowDisabledClicked] = useState(
-		!upperShadow
-	);
+	// const [isBodyDisabledClicked, setIsBodyDisabledClicked] = useState(
+	// 	!bodyRatio
+	// );
+	// const [isShadowDisabledClicked, setIsShadowDisabledClicked] = useState(
+	// 	!upperShadow
+	// );
 	const [isShadowDisabledClickedLock, setIsShadowDisabledClickedLock] =
 		useState(true);
 	const [isBodyDisabledClickedLock, setIsBodyDisabledClickedLock] =
 		useState(true);
 	const [
-		isCandlestickTypeDisabledClicked,
-		setIsCandlestickTypeDisabledClicked,
-	] = useState(!candlestickType);
-
-	useEffect(() => {
-		if (isActive) return;
-		setIsBodyDisabledClicked(false);
-		setIsShadowDisabledClicked(false);
-		setIsCandlestickTypeDisabledClicked(false);
-	}, [isActive]);
+		isCandlestickTypeDisabledClickedLock,
+		setIsCandlestickTypeDisabledClickedLock,
+	] = useState(true);
+	// const [
+	// 	isCandlestickTypeDisabledClicked,
+	// 	setIsCandlestickTypeDisabledClicked,
+	// ] = useState(!candlestickType);
 
 	useEffect(() => {
 		setEnteredBodyRatio("" + bodyRatio);
-		setIsBodyDisabledClicked(!bodyRatio);
 	}, [bodyRatio]);
 
 	useEffect(() => {
 		setEnteredUpperShadow("" + upperShadow);
-		setIsShadowDisabledClicked(!upperShadow);
 	}, [upperShadow]);
 
 	useEffect(() => {
@@ -82,12 +84,27 @@ function ChartCandlestickForm({ editId, isActive }) {
 	}, [lowerShadow]);
 
 	useEffect(() => {
+		if (isCandlestickTypeDisabledClickedLock) return;
+
+		dispatch(
+			setCandlestickType({
+				candlestickType: isCandlestickTypeDisabledClicked ? "-" : "bullish",
+			})
+		);
+		setIsCandlestickTypeDisabledClickedLock(true);
+	}, [
+		dispatch,
+		isCandlestickTypeDisabledClickedLock,
+		isCandlestickTypeDisabledClicked,
+	]);
+
+	useEffect(() => {
 		if (isShadowDisabledClickedLock) return;
 
 		dispatch(
 			setShadow({
-				upperShadow: isShadowDisabledClicked ? "" : enteredUpperShadow,
-				lowerShadow: isShadowDisabledClicked ? "" : enteredLowerShadow,
+				upperShadow: isShadowDisabledClicked ? "-" : enteredUpperShadow,
+				lowerShadow: isShadowDisabledClicked ? "-" : enteredLowerShadow,
 			})
 		);
 		setIsShadowDisabledClickedLock(true);
@@ -104,25 +121,19 @@ function ChartCandlestickForm({ editId, isActive }) {
 
 		dispatch(
 			setValue({
-				value: isBodyDisabledClicked ? "" : 0.5,
+				value: isBodyDisabledClicked ? "-" : 0.5,
 			})
 		);
 		dispatch(
 			setShadow({
-				upperShadow: isBodyDisabledClicked ? "" : 0.25,
-				lowerShadow: isBodyDisabledClicked ? "" : 0.25,
+				upperShadow: isBodyDisabledClicked ? "-" : 0.25,
+				lowerShadow: isBodyDisabledClicked ? "-" : 0.25,
 			})
 		);
 	}, [dispatch, isBodyDisabledClicked, isBodyDisabledClickedLock]);
 
 	useEffect(() => {
-		if (isBodyDisabledClicked) return;
-		if (isShadowDisabledClicked) {
-			const remainRatio = ((1 - enteredBodyRatio) / 2).toFixed(2);
-			setEnteredLowerShadow(remainRatio);
-			setEnteredUpperShadow(remainRatio);
-			return;
-		}
+		if (isBodyDisabledClicked || isShadowDisabledClicked) return;
 
 		if (isUpperShadowLock) return;
 
@@ -220,6 +231,9 @@ function ChartCandlestickForm({ editId, isActive }) {
 			upperShadow,
 			lowerShadow,
 			candlestickType,
+			isBodyDisabledClicked,
+			isShadowDisabledClicked,
+			isCandlestickTypeDisabledClicked,
 		};
 
 		const indicatorData = {
@@ -229,6 +243,10 @@ function ChartCandlestickForm({ editId, isActive }) {
 			upperShadow,
 			lowerShadow,
 			candlestickType,
+			isBodyDisabledClicked,
+			isShadowDisabledClicked,
+			isCandlestickTypeDisabledClicked,
+			loaded: true,
 		};
 
 		if (!editId) {
@@ -262,23 +280,24 @@ function ChartCandlestickForm({ editId, isActive }) {
 	};
 
 	const disableBodyRatioClickHandler = (event) => {
-		setIsBodyDisabledClicked((state) => !state);
+		dispatch(toggleIsBodyDisabledClicked());
 
 		const isClicked = event.target
 			.closest(".chart-panel-body-input-btn")
 			.classList.contains("active");
 
-		setIsShadowDisabledClicked(!isClicked);
+		dispatch(setIsShadowDisabledClicked(!isClicked));
 		setIsBodyDisabledClickedLock(false);
 	};
 
 	const disableShadowRatioClickHandler = () => {
-		setIsShadowDisabledClicked((state) => !state);
+		dispatch(toggleIsShadowDisabledClicked());
 		setIsShadowDisabledClickedLock(false);
 	};
 
 	const disableCandleStickTypeClickHandler = (event) => {
-		setIsCandlestickTypeDisabledClicked((state) => !state);
+		setIsCandlestickTypeDisabledClickedLock(false);
+		dispatch(toggleIsCandlestickTypeDisabledClicked());
 
 		!event.target
 			.closest(".chart-panel-body-input-btn")
@@ -293,7 +312,7 @@ function ChartCandlestickForm({ editId, isActive }) {
 					id="upperShadow"
 					name="upperShadow"
 					text={`Upper Shadow Ratio: ${
-						!+enteredUpperShadow || +enteredUpperShadow === 1
+						+enteredUpperShadow === 0 || +enteredUpperShadow === 1
 							? (+enteredUpperShadow).toFixed(0)
 							: enteredUpperShadow
 					}`}
@@ -343,7 +362,7 @@ function ChartCandlestickForm({ editId, isActive }) {
 				id="lowerShadow"
 				name="lowerShadow"
 				text={`Lower Shadow Ratio: ${
-					!+enteredLowerShadow || +enteredLowerShadow === 1
+					+enteredLowerShadow === 0 || +enteredLowerShadow === 1
 						? (+enteredLowerShadow).toFixed(0)
 						: enteredLowerShadow
 				}`}

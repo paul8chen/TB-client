@@ -2,8 +2,10 @@ import PropTypes from "prop-types";
 import Loader from "react-spinners/FadeLoader";
 
 const override = {
-	display: "block",
-	margin: "0 auto",
+	position: "absolute",
+	top: "50%",
+	left: "50%",
+	margin: "auto",
 };
 
 const rootStyleEl = getComputedStyle(document.documentElement);

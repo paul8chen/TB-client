@@ -27,11 +27,24 @@
 
 	.modal-wrapper {
 		max-height: 100%;
+		width: 70%;
 		border-radius: 10px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		background-color: var(--white-1);
+		.post-card {
+			max-width: none;
+			width: 100%;
+
+			.post-card-body-post-img {
+				img {
+					&:hover {
+						cursor: auto;
+					}
+				}
+			}
+		}
 	}
 }

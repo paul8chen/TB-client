@@ -21,9 +21,20 @@ class StockService extends BaseService {
 		);
 	}
 
-	getStockFilteredByCandlestick(bodyRatio, upperShadowRatio, candlestickType) {
+	getStockFilteredByCandlestick(
+		bodyRatio,
+		upperShadowRatio,
+		candlestickType,
+		isShadowDisabledClicked,
+		isBodyDisabledClicked,
+		isCandlestickTypeDisabledClicked
+	) {
+		console.log(
+			"💥URL💥",
+			`/get-candlestick?&upperShadowRatio=${upperShadowRatio}&bodyRatio=${bodyRatio}&candlestickType=${candlestickType}&isShadowDisabledClicked=${isShadowDisabledClicked}&isBodyDisabledClicked=${isBodyDisabledClicked}&isCandlestickTypeDisabledClicked=${isCandlestickTypeDisabledClicked}&selectedMonth=${process.env.REACT_APP_CHART_TOTAL_MONTH_OF_DATA}`
+		);
 		return this.getData(
-			`/get-candlestick?&upperShadowRatio=${upperShadowRatio}&bodyRatio=${bodyRatio}&candlestickType=${candlestickType}&selectedMonth=${process.env.REACT_APP_CHART_TOTAL_MONTH_OF_DATA}`
+			`/get-candlestick?&upperShadowRatio=${upperShadowRatio}&bodyRatio=${bodyRatio}&candlestickType=${candlestickType}&isShadowDisabledClicked=${isShadowDisabledClicked}&isBodyDisabledClicked=${isBodyDisabledClicked}&isCandlestickTypeDisabledClicked=${isCandlestickTypeDisabledClicked}&selectedMonth=${process.env.REACT_APP_CHART_TOTAL_MONTH_OF_DATA}`
 		);
 	}
 

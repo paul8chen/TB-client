@@ -5,6 +5,7 @@ import { GoClock } from "react-icons/go";
 import { SlOptionsVertical } from "react-icons/sl";
 import { HiOutlineTrash } from "react-icons/hi";
 import { FiEdit2 } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 
 import "@components/posts/post-card/PostCard.scss";
 import "@services/utils/time-ago";
@@ -13,10 +14,12 @@ import { PostUtils } from "@services/utils/post.utils";
 import useClickOutside from "@hooks/useClickOutside";
 import { postService } from "@services/api/post.service";
 import PostInteraction from "@components/posts/post-interaction/PostInteraction";
-// import useEffectOnce from "@hooks/useEffectOnce";
+import { openModal } from "@store/reducers/postModelReducer";
 
 const PostCard = ({ post, editable, showComment }) => {
+	const dispatch = useDispatch();
 	const editableRef = useRef();
+	const { isOpen } = useSelector((state) => state.postModal);
 	const [isEditClick, setIsEditClick] = useClickOutside(editableRef);
 
 	// const reLoadPostData = async () => {
@@ -42,6 +45,16 @@ const PostCard = ({ post, editable, showComment }) => {
 	const deleteClickHandler = async (event) => {
 		await postService.deletePost(post._id);
 		event.target.closest(".post-card").classList.add("removed");
+	};
+
+	const postImageClickHandler = () => {
+		if (isOpen) return;
+		dispatch(
+			openModal({
+				post,
+				editable,
+			})
+		);
 	};
 
 	return (
@@ -88,7 +101,10 @@ const PostCard = ({ post, editable, showComment }) => {
 					<div className="post-card-body-post-text">
 						<p>{post.post}</p>
 					</div>
-					<div className="post-card-body-post-img">
+					<div
+						className="post-card-body-post-img"
+						onClick={postImageClickHandler}
+					>
 						<img
 							src={PostUtils.getImgFromCloudinary(post.imgVersion, post.imgId)}
 							alt="post img"

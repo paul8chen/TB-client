@@ -262,14 +262,24 @@ export class ChartUtils {
 	}
 
 	static async loadCandlestickStockData(indicatorData) {
-		const { upperShadow, candlestickType, indicatorValue } = indicatorData;
+		const {
+			upperShadow,
+			candlestickType,
+			indicatorValue,
+			isShadowDisabledClicked,
+			isBodyDisabledClicked,
+			isCandlestickTypeDisabledClicked,
+		} = indicatorData;
 		const value = indicatorValue[0];
 		console.log("💥LOADING💥");
 		try {
 			const response = await stockService.getStockFilteredByCandlestick(
 				value,
 				upperShadow,
-				candlestickType
+				candlestickType,
+				isShadowDisabledClicked,
+				isBodyDisabledClicked,
+				isCandlestickTypeDisabledClicked
 			);
 			const resData = await response.json();
 			console.log("💥resData💥", resData);
@@ -344,7 +354,20 @@ export class ChartUtils {
 	}
 
 	static getCandlestickIndicatorData(DBData) {
-		const { id, bodyRatio, upperShadow, lowerShadow, candlestickType } = DBData;
+		const {
+			id,
+			bodyRatio: bodyRatio_,
+			upperShadow: upperShadow_,
+			lowerShadow: lowerShadow_,
+			candlestickType,
+			isShadowDisabledClicked,
+			isBodyDisabledClicked,
+			isCandlestickTypeDisabledClicked,
+		} = DBData;
+
+		const bodyRatio = bodyRatio_ === -1 ? "-" : bodyRatio_;
+		const upperShadow = upperShadow_ === -1 ? "-" : upperShadow_;
+		const lowerShadow = lowerShadow_ === -1 ? "-" : lowerShadow_;
 
 		return {
 			id,
@@ -355,6 +378,9 @@ export class ChartUtils {
 			lowerShadow,
 			candlestickType,
 			selected: false,
+			isShadowDisabledClicked,
+			isBodyDisabledClicked,
+			isCandlestickTypeDisabledClicked,
 		};
 	}
 
@@ -396,14 +422,24 @@ export class ChartUtils {
 	}
 
 	static getCandlestickPanelData(indicatorData) {
-		const { indicatorValue, upperShadow, lowerShadow, candlestickType } =
-			indicatorData;
+		const {
+			indicatorValue,
+			upperShadow,
+			lowerShadow,
+			candlestickType,
+			isShadowDisabledClicked,
+			isBodyDisabledClicked,
+			isCandlestickTypeDisabledClicked,
+		} = indicatorData;
 
 		return {
 			value: indicatorValue[0],
 			upperShadow,
 			lowerShadow,
 			candlestickType,
+			isShadowDisabledClicked,
+			isBodyDisabledClicked,
+			isCandlestickTypeDisabledClicked,
 		};
 	}
 

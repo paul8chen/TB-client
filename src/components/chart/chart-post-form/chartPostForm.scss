@@ -1,0 +1,29 @@
+.chart-panel-body-post {
+	margin-top: 0.4rem;
+	margin-left: -1.5rem;
+	margin-right: -1.5rem;
+	margin-bottom: 0.5rem;
+	// height: 100%;
+	// background-color: red;
+
+	&-text {
+		display: flex;
+		margin-left: 0.5rem;
+		margin-bottom: 0.25rem;
+		font-weight: 500;
+		font-size: 0.8rem;
+		letter-spacing: var(--letter-spacing);
+
+		&-invalid {
+			margin-right: 0.5rem;
+			margin-left: auto;
+			color: var(--red-4);
+		}
+
+		&-message {
+			margin-right: 0.5rem;
+			margin-left: auto;
+			color: var(--green-4);
+		}
+	}
+}

@@ -132,11 +132,11 @@ const chartSlice = createSlice({
 		});
 		builder.addCase(getIndicatorData.fulfilled, (state, action) => {
 			const { data } = action.payload;
-			console.log("💥DATA UNSORTED", data.indicatorData);
+
 			data.indicatorData.sort(
 				({ createdAt: a }, { createdAt: b }) => new Date(a) - new Date(b)
 			);
-			console.log("💥DATA SORTED", data.indicatorData);
+
 			const indicatorData = data.indicatorData.map((dbData) =>
 				ChartUtils.convertDBDataToIndicatorData(dbData)
 			);

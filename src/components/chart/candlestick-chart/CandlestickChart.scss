@@ -1,12 +1,14 @@
 .candle-stick-chart-container {
 	height: 600px;
 	display: flex;
-	gap: 1300px;
+
+	// gap: 1300px;
 	// justify-content: space-evenly;
 
 	.candle-stick-chart {
 		position: relative;
-		// background-color: red;
+		width: 1300px;
+		height: 600px;
 
 		&-icon {
 			position: absolute;
@@ -19,6 +21,7 @@
 		}
 	}
 	.indicator-container {
+		position: relative;
 		width: 400px;
 		// background-color: red;
 		.indicator-body {

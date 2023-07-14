@@ -9,7 +9,13 @@ import { TbLoader } from "react-icons/tb";
 import "@components/textAreaInput/TextAreaInput.scss";
 import useClickOutside from "@hooks/useClickOutside";
 
-function TextAreaInput({ onSubmit, className, emojiPickerStyle, value }) {
+function TextAreaInput({
+	onSubmit,
+	className,
+	emojiPickerStyle,
+	value,
+	placeholder,
+}) {
 	const emojiPickerRef = useRef();
 	const [inputValue, setInputValue] = useState(value);
 	const [isInputValid, setIsInputValid] = useState();
@@ -42,6 +48,7 @@ function TextAreaInput({ onSubmit, className, emojiPickerStyle, value }) {
 		setIsLoading(true);
 		await onSubmit(inputValue);
 		setIsLoading(false);
+		setInputValue("");
 	};
 
 	return (
@@ -50,7 +57,7 @@ function TextAreaInput({ onSubmit, className, emojiPickerStyle, value }) {
 				<TextareaAutosize
 					autoFocus
 					value={inputValue}
-					placeholder="say something..."
+					placeholder={placeholder || "say something..."}
 					onChange={textAreaChangeHandler}
 					className={className}
 				/>
@@ -91,6 +98,7 @@ TextAreaInput.propTypes = {
 	className: PropTypes.string,
 	emojiPickerStyle: PropTypes.object,
 	value: PropTypes.string,
+	placeholder: PropTypes.string,
 };
 
 TextAreaInput.defaultProps = {

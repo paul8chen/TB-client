@@ -5,6 +5,7 @@ import "@components/chart/chart-panel/ChartPanel.scss";
 import ChartPriceForm from "@components/chart/chart-price-form/ChartPriceForm";
 import ChartMaForm from "@components/chart/chart-ma-form/chartMaForm";
 import ChartCandlestickForm from "@components/chart/chart-candlestick-form/chartCandlestickForm";
+import ChartPostForm from "@components/chart/chart-post-form/chartPostForm";
 import { setCurrent } from "@store/reducers/chartPanelReducer";
 
 function ChartPanel() {
@@ -79,20 +80,20 @@ function ChartPanel() {
 					</div>
 					<div
 						className={`chart-panel-navbar-item ${
-							current === "post" ? "active" : ""
-						}`}
-						data-current="post"
-					>
-						<p>Post</p>
-						<div className={`sliding-bar ${editId ? "editting" : ""}`} />
-					</div>
-					<div
-						className={`chart-panel-navbar-item ${
 							current === "backtesting" ? "active" : ""
 						}`}
 						data-current="backtesting"
 					>
 						<p>Backtesting</p>
+						<div className={`sliding-bar ${editId ? "editting" : ""}`} />
+					</div>
+					<div
+						className={`chart-panel-navbar-item ${
+							current === "publish" ? "active" : ""
+						}`}
+						data-current="publish"
+					>
+						<p>Publish</p>
 						<div className={`sliding-bar ${editId ? "editting" : ""}`} />
 					</div>
 					<div className="sliding-bar-container " />
@@ -108,6 +109,7 @@ function ChartPanel() {
 					{current === "candlestick" && (
 						<ChartCandlestickForm editId={editId} isActive={isActive} />
 					)}
+					{current === "publish" && <ChartPostForm />}
 				</div>
 			</div>
 		</div>

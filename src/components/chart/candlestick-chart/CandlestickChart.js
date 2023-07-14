@@ -42,7 +42,7 @@ const indicatorTypeWithStyle = ["price", "ma"];
 function CandlestickChart({ stock }) {
 	// console.log("render chart-candlestick");
 	const uId = useLocalStorage("uId", "get");
-	const tickIdStorage = useLocalStorage("tickId", "get");
+	// const tickIdStorage = useLocalStorage("tickId", "get");
 	const [options, setOptions] = useState();
 	const dispatch = useDispatch();
 	const {
@@ -72,10 +72,13 @@ function CandlestickChart({ stock }) {
 		maData,
 		upperShadow,
 		candlestickType,
+		isShadowDisabledClicked,
+		isBodyDisabledClicked,
+		isCandlestickTypeDisabledClicked,
 	} = useSelector((state) => state.chartPanel[current]);
 
 	const loadTickId = async () => {
-		if (tickIdStorage) return;
+		if (tickId) return;
 
 		try {
 			const response = await stockService.getTick("" + uId);
@@ -89,9 +92,10 @@ function CandlestickChart({ stock }) {
 	useEffectOnce(loadTickId);
 
 	useEffect(() => {
+		if (!isChartLoaded) return;
 		if (!tickId) return;
 		dispatch(getIndicatorData(tickId));
-	}, [tickId, dispatch]);
+	}, [tickId, dispatch, isChartLoaded]);
 
 	useEffect(() => {
 		if (isPanelActive)
@@ -163,7 +167,10 @@ function CandlestickChart({ stock }) {
 					const response = await stockService.getStockFilteredByCandlestick(
 						value,
 						upperShadow,
-						candlestickType
+						candlestickType,
+						isShadowDisabledClicked,
+						isBodyDisabledClicked,
+						isCandlestickTypeDisabledClicked
 					);
 					const resData = await response.json();
 					const { stockData } = resData.data;
@@ -186,6 +193,9 @@ function CandlestickChart({ stock }) {
 		current,
 		upperShadow,
 		candlestickType,
+		isShadowDisabledClicked,
+		isBodyDisabledClicked,
+		isCandlestickTypeDisabledClicked,
 	]);
 
 	useEffect(() => {
@@ -298,7 +308,7 @@ function CandlestickChart({ stock }) {
 					})}
 			</div>
 			<div className="indicator-container">
-				<FadeLoader loading={isIndicatorLoading} />
+				<FadeLoader loading={!isChartLoaded || isIndicatorLoading} />
 
 				<div className="indicator-body">
 					{!isIndicatorLoading &&
